@@ -1,0 +1,19 @@
+{
+  "name": "homebridge-commander",
+  "version": "0.0.0",
+  "description": "Command plugin for HomeBridge",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "github.com/RockyGJ/homebridge-commander.git"
+  },
+  "keywords": [
+    "Homebridge",
+    "COmmand"
+  ],
+  "author": "Gertjan Rocks",
+  "license": "ISC"
+}
