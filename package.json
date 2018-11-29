@@ -11,9 +11,12 @@
     "url": "github.com/RockyGJ/homebridge-commander.git"
   },
   "keywords": [
-    "Homebridge",
-    "COmmand"
+    "homebridge-plugin"
   ],
   "author": "Gertjan Rocks",
-  "license": "ISC"
+  "license": "ISC",
+  "engines": {
+    "node": ">=0.12.0",
+    "homebridge": ">=0.3.0"
+  }
 }
