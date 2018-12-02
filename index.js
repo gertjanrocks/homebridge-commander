@@ -258,7 +258,6 @@ commanderCommand.prototype.setPowerState = function(state, callback) {
 //  Brightness Get and Set is used for:
 //    Lightbulb
 //
-
 commanderCommand.prototype.getBrightness = function(callback) {
   var that = this;
   var cmd = that.cmd;
@@ -269,7 +268,7 @@ commanderCommand.prototype.getBrightness = function(callback) {
   }
   // Execute command to get brightness
   exec(cmd, function (error, stdout, stderr) {
-    //Get state
+    //Get brightness
     that.brightness = parseInt(stdout);  
     // Error detection
     if (stderr) {
@@ -305,21 +304,60 @@ commanderCommand.prototype.setBrightness = function(value, callback) {
   that.getBrightness(callback);
 }
 
+//
+//  Saturation Get and Set is used for:
+//    Lightbulb
+//
 commanderCommand.prototype.getSaturation = function(callback) {
   var that = this;
-  that.saturation = 50;
-  that.log("Saturation for", that.name, "is", that.saturation);
-  if(callback) {
-    callback(null, that.saturation);
+  var cmd = that.cmd;
+
+  // Add arguments
+  if(!that.no_arg){
+    cmd += " " + that.name + " saturation" + " get";
   }
+  // Execute command to get Saturation
+  exec(cmd, function (error, stdout, stderr) {
+    //Get saturation
+    that.saturation = parseInt(stdout);  
+    // Error detection
+    if (stderr) {
+      that.log("Failed to excecute get command for",that.name);
+      that.log(stderr);
+    }
+    if (callback) {
+      callback(stderr, that.saturation);
+    }
+  });
 }
 
 commanderCommand.prototype.setSaturation = function(value, callback) {
   var that = this;
-  that.log (that.name, "Saturation set to", value);
+  var cmd = that.cmd;
+
+  // Add arguments
+  if(!that.no_arg){
+    cmd += " " + that.name + " saturation " + "set " + value;
+  }  
+  // Execute command to set Saturation
+  exec(cmd, function (error, stdout, stderr) {
+    // Error detection
+    if (error) {
+      that.log("Failed to execute set command for",that.name);
+      that.log(stderr);
+    } else {
+      if (cmd) that.log(that.name,"Saturation changed to",value);
+      error = null;
+      that.saturation = value;
+    }
+  });
   that.getSaturation(callback);
 }
 
+//
+//  Hue Get and Set is used for:
+//    Lightbulb
+//
 commanderCommand.prototype.getHue = function(callback) {
   var that = this;
   that.hue = 50;
