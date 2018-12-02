@@ -89,7 +89,7 @@ function commanderCommand(log, commandConfig) {
       //Optional if "brightness" is true
       if(this.settings.brightness) {
         this.service.getCharacteristic(Characteristic.Brightness)
-        .on('set', this.setBrightness.bifalsend(this))
+        .on('set', this.setBrightness.bind(this))
         .on('get', this.getBrightness.bind(this));
       }
       //Optional if "hue" is true
@@ -214,13 +214,12 @@ commanderCommand.prototype.getPowerState = function(callback) {
 
   // Add arguments
   if(!that.no_arg){
-    cmd += " " + that.name + " get" + " PowerState";
+    cmd += " " + that.name + " powerstate" + " get";
   }
-
-  // Execute command to detect state
+  // Execute command to get PowerState
   exec(cmd, function (error, stdout, stderr) {
     //Get state
-    that.powerState = error ? false : true;  
+    that.powerState = stdout ? false : true;  
     // Error detection
     if (stderr) {
       that.log("Failed to excecute get command for",that.name);
@@ -238,10 +237,9 @@ commanderCommand.prototype.setPowerState = function(state, callback) {
 
   // Add arguments
   if(!that.no_arg){
-    cmd += " " + that.name + " set" + " PowerState " + state;
-  }
-  
-  // Execute command to set state
+    cmd += " " + that.name + " powerstate " + "set " + state;
+  }  
+  // Execute command to set PowerState
   exec(cmd, function (error, stdout, stderr) {
     // Error detection
     if (error) {
@@ -257,22 +255,53 @@ commanderCommand.prototype.setPowerState = function(state, callback) {
 }
 
 //
-//
-//
+//  Brightness Get and Set is used for:
+//    Lightbulb
 //
 
 commanderCommand.prototype.getBrightness = function(callback) {
   var that = this;
-  that.brightness = 50;
-  that.log("Brightness for", that.name, "is", that.brightness);
-  if(callback) {
-    callback(null, that.brightness);
+  var cmd = that.cmd;
+
+  // Add arguments
+  if(!that.no_arg){
+    cmd += " " + that.name + " brightness" + " get";
   }
+  // Execute command to get brightness
+  exec(cmd, function (error, stdout, stderr) {
+    //Get state
+    that.brightness = parseInt(stdout);  
+    // Error detection
+    if (stderr) {
+      that.log("Failed to excecute get command for",that.name);
+      that.log(stderr);
+    }
+    if (callback) {
+      callback(stderr, that.brightness);
+    }
+  });
 }
 
 commanderCommand.prototype.setBrightness = function(value, callback) {
   var that = this;
-  that.log (that.name, "brightness set to", value);
+  var cmd = that.cmd;
+
+  // Add arguments
+  if(!that.no_arg){
+    cmd += " " + that.name + " brightness " + "set " + value;
+  }  
+  // Execute command to set Brightness
+  exec(cmd, function (error, stdout, stderr) {
+    // Error detection
+    if (error) {
+      that.log("Failed to execute set command for",that.name);
+      that.log(stderr);
+    } else {
+      if (cmd) that.log(that.name,"Brightness changed to",value);
+      error = null;
+      that.brightness = value;
+    }
+  });
   that.getBrightness(callback);
 }
 

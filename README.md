@@ -1,10 +1,10 @@
 # homebridge-commander
 Simple CLI plug-in for homebridge
 
-By default homebridge-commander will execute the cmd listed in the config with default arguments. The default arguments are the name of the command (given name from config.json), the action (get or set),the type of command (PowerState, Brightnessvalue, etc.) and the value.
+By default homebridge-commander will execute the cmd listed in the config with default arguments. The default arguments are the name of the command (given name from config.json), the type of command (PowerState, Brightness, etc.) the action (get or set), and the value (only by set command).
 
 ```
- cmd command_name acion command_type value
+ cmd command_name command_type acion value
 ```
 
 The arguments can be turned off by setting the no_arg value to true
@@ -36,6 +36,7 @@ Set the listed settings to true to have them active in Homekit
 "saturatiuon" : true,
 "colortemperature" : true,
 ```
+(note: Arguments will be added)
 
 ### Optional for Speaker
 Set the listed settings to true to have them active in Homekit
