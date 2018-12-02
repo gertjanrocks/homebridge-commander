@@ -12,6 +12,8 @@ The arguments can be turned off by setting the no_arg value to true
 ## Supported types
 - Switch
 - Lightbulb
+- Outlet
+- Speaker
 
 ## Config.json settings
 ```

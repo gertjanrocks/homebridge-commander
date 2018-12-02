@@ -137,10 +137,7 @@ function commanderCommand(log, commandConfig) {
       }
       break;
     }
-
-
   }
-
 
   //Start the update service
   setTimeout(this.updateStatus.bind(this), this.updaterate);
@@ -208,18 +205,31 @@ commanderCommand.prototype.updateStatus = function() {
 
 
 //
-//  Power State Get and Set is used for:
+//  PowerState Get and Set is used for:
 //    Switch, Lightbulb, Outlet
 //
 commanderCommand.prototype.getPowerState = function(callback) {
   var that = this;
+  var cmd = that.cmd;
 
-  that.powerState = true;
-  that.log("Get power state for",that.name);
+  // Add arguments
+  if(!that.no_arg){
+    cmd += " " + that.name + " get" + " PowerState";
+  }
 
-
-  if (callback) {
-  callback(null, that.powerState);}
+  // Execute command to detect state
+  exec(cmd, function (error, stdout, stderr) {
+    //Get state
+    that.powerState = error ? false : true;  
+    // Error detection
+    if (stderr) {
+      that.log("Failed to excecute get command for",that.name);
+      that.log(stderr);
+    }
+    if (callback) {
+      callback(stderr, that.powerState);
+    }
+  });
 }
 
 commanderCommand.prototype.setPowerState = function(state, callback) {
@@ -235,7 +245,7 @@ commanderCommand.prototype.setPowerState = function(state, callback) {
   exec(cmd, function (error, stdout, stderr) {
     // Error detection
     if (error) {
-      that.log("Failed to execute command for",that.name);
+      that.log("Failed to execute set command for",that.name);
       that.log(stderr);
     } else {
       if (cmd) that.log(that.name,"PowerState changed to",state);
