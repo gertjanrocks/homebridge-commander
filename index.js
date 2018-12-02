@@ -7,7 +7,7 @@ var debug = false;
 /////////////////
 
 
-// //var exec = require("child_process").exec;
+var exec = require("child_process").exec;
 // var Accessory
 var Service;
 var Characteristic;
@@ -52,6 +52,8 @@ function commanderCommand(log, commandConfig) {
   this.name = commandConfig.name;
   this.updaterate = commandConfig.updaterate || 5000;
   this.type = commandConfig.type;
+  this.cmd = commandConfig.cmd;
+  this.no_arg = commandConfig.no_arg || false;
 
   //Optinal settings for different types
   this.settings = [];
@@ -144,6 +146,7 @@ function commanderCommand(log, commandConfig) {
   setTimeout(this.updateStatus.bind(this), this.updaterate);
 }
 
+//Get service function. This used for every added command
 commanderCommand.prototype.getServices = function() {
   var informationService = new Service.AccessoryInformation();
   informationService
@@ -203,22 +206,50 @@ commanderCommand.prototype.updateStatus = function() {
   }, this.updaterate);
 }
 
+
+//
+//  Power State Get and Set is used for:
+//    Switch, Lightbulb, Outlet
+//
 commanderCommand.prototype.getPowerState = function(callback) {
   var that = this;
 
   that.powerState = true;
   that.log("Get power state for",that.name);
+
+
   if (callback) {
   callback(null, that.powerState);}
 }
 
 commanderCommand.prototype.setPowerState = function(state, callback) {
   var that = this;
-    that.log (that.name, "is set to",state);
-    that.getPowerState(callback);
+  var cmd = that.cmd;
+
+  // Add arguments
+  if(!that.no_arg){
+    cmd += " " + that.name + " set" + " PowerState " + state;
+  }
+  
+  // Execute command to set state
+  exec(cmd, function (error, stdout, stderr) {
+    // Error detection
+    if (error) {
+      that.log("Failed to execute command for",that.name);
+      that.log(stderr);
+    } else {
+      if (cmd) that.log(that.name,"PowerState changed to",state);
+      error = null;
+      that.powerState = state;
+    }
+  });
+  that.getPowerState(callback);
 }
 
-
+//
+//
+//
+//
 
 commanderCommand.prototype.getBrightness = function(callback) {
   var that = this;
