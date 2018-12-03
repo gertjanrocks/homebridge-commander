@@ -30,10 +30,16 @@ The arguments can be turned off by setting the no_arg value to true
 
 ### Optional for Lightbulb
 Set the listed settings to true to have them active in Homekit
+Lightbulb supports hue and saturation or colortemperture.
+When hue or saturation is set to true colortemperature will be disabled.
 ```
 "brightness" : true,
 "hue" : true,
-"saturatiuon" : true,
+"saturation" : true,
+```
+or
+```
+"brightness" : true,
 "colortemperature" : true,
 ```
 (note: Arguments will be added)

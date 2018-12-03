@@ -62,6 +62,9 @@ function commanderCommand(log, commandConfig) {
   this.settings.hue = commandConfig.hue || false;
   this.settings.saturation = commandConfig.saturation || false;
   this.settings.colortemperature = commandConfig.colortemperature || false;
+  if(this.settings.hue || this.settings.saturation){
+    this.settings.colortemperature = false;
+  }
   //Speaker
   this.settings.volume = commandConfig.volume || false;
     
@@ -360,30 +363,97 @@ commanderCommand.prototype.setSaturation = function(value, callback) {
 //
 commanderCommand.prototype.getHue = function(callback) {
   var that = this;
-  that.hue = 50;
-  that.log("HUe for", that.name, "is", that.hue);
-  if(callback) {
-    callback(null, that.hue);
+  var cmd = that.cmd;
+
+  // Add arguments
+  if(!that.no_arg){
+    cmd += " " + that.name + " hue" + " get";
   }
+  // Execute command to get Hue
+  exec(cmd, function (error, stdout, stderr) {
+    //Get hue
+    that.hue = parseInt(stdout);  
+    // Error detection
+    if (stderr) {
+      that.log("Failed to excecute get command for",that.name);
+      that.log(stderr);
+    }
+    if (callback) {
+      callback(stderr, that.hue);
+    }
+  });
 }
 
 commanderCommand.prototype.setHue = function(value, callback) {
   var that = this;
-  that.log (that.name, "Hue set to", value);
+  var cmd = that.cmd;
+
+  // Add arguments
+  if(!that.no_arg){
+    cmd += " " + that.name + " hue " + "set " + value;
+  }  
+  // Execute command to set Hue
+  exec(cmd, function (error, stdout, stderr) {
+    // Error detection
+    if (error) {
+      that.log("Failed to execute set command for",that.name);
+      that.log(stderr);
+    } else {
+      if (cmd) that.log(that.name,"Hue changed to",value);
+      error = null;
+      that.hue = value;
+    }
+  });
   that.getHue(callback);
 }
+
+//
+//  Color Temperature Get and Set is used for:
+//    Lightbulb
+//
 commanderCommand.prototype.getColorTemperature = function(callback) {
   var that = this;
-  that.colortemperature = 50;
-  that.log("Color Temperature for", that.name, "is", that.colortemperature);
-  if(callback) {
-    callback(null, that.colortemperature);
+  var cmd = that.cmd;
+
+  // Add arguments
+  if(!that.no_arg){
+    cmd += " " + that.name + " colortemperature" + " get";
   }
+  // Execute command to get Color Temperature
+  exec(cmd, function (error, stdout, stderr) {
+    //Get colortemperature
+    that.colortemperature = parseInt(stdout);  
+    // Error detection
+    if (stderr) {
+      that.log("Failed to excecute get command for",that.name);
+      that.log(stderr);
+    }
+    if (callback) {
+      callback(stderr, that.colortemperature);
+    }
+  });
 }
 
 commanderCommand.prototype.setColorTemperature = function(value, callback) {
   var that = this;
-  that.log (that.name, "Color Temperature set to", value);
+  var cmd = that.cmd;
+
+  // Add arguments
+  if(!that.no_arg){
+    cmd += " " + that.name + " colortemperature " + "set " + value;
+  }  
+  // Execute command to set Color Temperature
+  exec(cmd, function (error, stdout, stderr) {
+    // Error detection
+    if (error) {
+      that.log("Failed to execute set command for",that.name);
+      that.log(stderr);
+    } else {
+      if (cmd) that.log(that.name,"Color Temperature changed to",value);
+      error = null;
+      that.colortemperature = value;
+    }
+  });
   that.getColorTemperature(callback);
 }
 
