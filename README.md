@@ -1,4 +1,4 @@
-# homebridge-commander
+# homebridge-commander [![npm version](https://badge.fury.io/js/homebridge-commander.svg)](https://badge.fury.io/js/homebridge-commander)
 CLI plug-in for [HomeBridge](https://github.com/nfarina/homebridge)
 
 By default homebridge-commander will execute the cmd listed in the config with default arguments. The default arguments are the name of the command (given name from config.json), the type of command (powerstate, brightness, etc.) the action (get or set), and the value (only with set command).
