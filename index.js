@@ -221,8 +221,8 @@ commanderCommand.prototype.getPowerState = function(callback) {
   }
   // Execute command to get PowerState
   exec(cmd, function (error, stdout, stderr) {
-    //Get state
-    that.powerState = stdout ? false : true;  
+    //Get Powerstate
+    that.powerState = (stdout.trim() === "true") ? true : false; 
     // Error detection
     if (stderr) {
       that.log("Failed to excecute get command for",that.name);
@@ -457,8 +457,13 @@ commanderCommand.prototype.setColorTemperature = function(value, callback) {
   that.getColorTemperature(callback);
 }
 
+//
+//  Outlet in use Get is used for:
+//    Outlet
+//
 commanderCommand.prototype.getOutletInUse = function(callback) {
   var that = this;
+  var cmd = that.cmd;
 
   that.outletinuse = true;
   that.log("Get Outlet in use for",that.name);
