@@ -465,10 +465,23 @@ commanderCommand.prototype.getOutletInUse = function(callback) {
   var that = this;
   var cmd = that.cmd;
 
-  that.outletinuse = true;
-  that.log("Get Outlet in use for",that.name);
-  if (callback) {
-  callback(null, that.outletinuse);}
+  // Add arguments
+  if(!that.no_arg){
+    cmd += " " + that.name + " outletinuse" + " get";
+  }
+  // Execute command to get Outlet in use
+  exec(cmd, function (error, stdout, stderr) {
+    //Get Outlet in use
+    that.outletinuse = (stdout.trim() === "true") ? true : false;
+    // Error detection
+    if (stderr) {
+      that.log("Failed to excecute get command for",that.name);
+      that.log(stderr);
+    }
+    if (callback) {
+      callback(stderr, that.outletinuse);
+    }
+  });
 }
 
 
