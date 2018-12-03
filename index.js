@@ -485,35 +485,102 @@ commanderCommand.prototype.getOutletInUse = function(callback) {
 }
 
 
-////SPEAKER
-
+//
+//  Mute Get and Set is used for:
+//    Speaker
+//
 commanderCommand.prototype.getMute = function(callback) {
   var that = this;
+  var cmd = that.cmd;
 
-  that.mute = false;
-  that.log("Get mute for",that.name);
-  if (callback) {
-  callback(null, that.mute);}
+  // Add arguments
+  if(!that.no_arg){
+    cmd += " " + that.name + " mute" + " get";
+  }
+  // Execute command to get mute
+  exec(cmd, function (error, stdout, stderr) {
+    //Get mute
+    that.mute = (stdout.trim() === "true") ? true : false;
+    // Error detection
+    if (stderr) {
+      that.log("Failed to excecute get command for",that.name);
+      that.log(stderr);
+    }
+    if (callback) {
+      callback(stderr, that.mute);
+    }
+  });
 }
 
 commanderCommand.prototype.setMute = function(state, callback) {
   var that = this;
-    that.log (that.name, "is set to",state);
-    that.getPowerState(callback);
+  var cmd = that.cmd;
+
+  // Add arguments
+  if(!that.no_arg){
+    cmd += " " + that.name + " mute " + "set " + state;
+  }  
+  // Execute command to set Mute
+  exec(cmd, function (error, stdout, stderr) {
+    // Error detection
+    if (error) {
+      that.log("Failed to execute set command for",that.name);
+      that.log(stderr);
+    } else {
+      if (cmd) that.log(that.name,"Mute changed to",state);
+      error = null;
+      that.mute = state;
+    }
+  });
+  that.getMute(callback);
 }
 
-
+//
+//  Volume Get and Set is used for:
+//    Speaker
+//
 commanderCommand.prototype.getVolume = function(callback) {
   var that = this;
-  that.volume = 50;
-  that.log("Volume for", that.name, "is", that.volume);
-  if(callback) {
-    callback(null, that.volume);
+  var cmd = that.cmd;
+
+  // Add arguments
+  if(!that.no_arg){
+    cmd += " " + that.name + " volume" + " get";
   }
+  // Execute command to get the Volume
+  exec(cmd, function (error, stdout, stderr) {
+    //Get volume
+    that.volume = parseInt(stdout);  
+    // Error detection
+    if (stderr) {
+      that.log("Failed to excecute get command for",that.name);
+      that.log(stderr);
+    }
+    if (callback) {
+      callback(stderr, that.volume);
+    }
+  });
 }
 
 commanderCommand.prototype.setVolume = function(value, callback) {
   var that = this;
-  that.log (that.name, "Volume set to", value);
+  var cmd = that.cmd;
+
+  // Add arguments
+  if(!that.no_arg){
+    cmd += " " + that.name + " volume " + "set " + value;
+  }  
+  // Execute command to set volume
+  exec(cmd, function (error, stdout, stderr) {
+    // Error detection
+    if (error) {
+      that.log("Failed to execute set command for",that.name);
+      that.log(stderr);
+    } else {
+      if (cmd) that.log(that.name,"Volume changed to",value);
+      error = null;
+      that.volume = value;
+    }
+  });
   that.getVolume(callback);
 }

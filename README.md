@@ -1,10 +1,16 @@
 # homebridge-commander
 Simple CLI plug-in for homebridge
 
-By default homebridge-commander will execute the cmd listed in the config with default arguments. The default arguments are the name of the command (given name from config.json), the type of command (PowerState, Brightness, etc.) the action (get or set), and the value (only by set command).
+By default homebridge-commander will execute the cmd listed in the config with default arguments. The default arguments are the name of the command (given name from config.json), the type of command (powerstate, brightness, etc.) the action (get or set), and the value (only with set command).
+
+See ExampleScript.sh in the example directory for one script which excepts all commands.
+It is possible to have a seperate script each listed command.
 
 ```
  cmd command_name command_type action value
+ 
+ example: 
+ ExampleScript.sh SwitchName powerstate set true
 ```
 
 The arguments can be turned off by setting the no_arg value to true
@@ -16,21 +22,31 @@ The arguments can be turned off by setting the no_arg value to true
 - Speaker
 
 ## Config.json settings
-Basic commands settings. See config.json in the example directory. 
-```
-"name" : "Name",
-"type" : one of the following:
-         "switch"
-         "lightbulb"
-         "outlet"
-         "speaker"
-"cmd" : "path to command or command"
-"no_arg" : false
-"updaterate" : 5000
+Platform config settings. See config.json in the example directory.
 
+```
+"platforms": [
+         {
+            "platform": "commander",
+            "name": "PlatformName",
+            "commands": [{
+                "name" : "command_name",
+                "type" : one of the following:
+                         "switch"
+                         "lightbulb"
+                         "outlet"
+                         "speaker"
+                "cmd" : "path to command or command"
+                "no_arg" : false
+                "updaterate" : 5000
+                }]
+         }]
 ```
 | Setting | Description | Required |  
 | ------------- | --- | --- |
+| `"platform"` | Should be set to "commander" | yes |
+| `"name"` | Platform name changeable for user | yes |
+| `"commands` | List of commands | yes |
 | `"name"`  |  User Name of the command  |  yes  |
 | `"type"`  |  Which tyoe the command needs to appear in HomeKit  |  yes  |
 | `"cmd"`  |  Executed command (can be bash script)  |  yes  |
@@ -40,7 +56,7 @@ Basic commands settings. See config.json in the example directory.
 
 ### Switch
 Switch has no additional settings.
-Switch has the following command_types :
+Switch has the following command_types config:
 
 | command_types | get | set | description |   
 | ------------- | --- | --- | ----------- |
@@ -82,7 +98,7 @@ Lightbulb has the following command_types :
 | `saturation`  |  X  |  X  | saturation in 0-100% |
 | `colortemperature`  |  X  |  X  | color temperature 50-400 MK |
 
-Example of a lightbulb command (without Color Temperature):
+Example of a lightbulb command config (without Color Temperature):
 ```
 "commands": [{
     "name": "LightBulbName",
@@ -103,7 +119,7 @@ Outlet has the following command_types :
 | `powerstate`  |  X  |  X  | true for on |
 | `outletinuse`  |  X  |  -  | true for in use |
 
-Example of a switch command:
+Example of a switch command config:
 ```
 "commands": [{
     "name": "OutletName",
@@ -112,10 +128,27 @@ Example of a switch command:
     }
 ```
 
-### Optional for Speaker
+### Speaker
 Set the listed settings to true to have them active in Homekit
 ```
 "volume" : true,
 ```
+Speaker has the following command_types :
+
+| command_types | get | set | description |  
+| ------------- | --- | --- | ----------- |
+| `mute`  |  X  |  X  | true for mute |
+| `volume`  |  X  |  X  | volume in 0-100 |
+
+Example of a speaker command config:
+```
+"commands": [{
+    "name": "SpeakerName",
+    "type": "speaker",
+    "cmd" : "~/ExampleScript.sh"
+    "volume" : true,
+    }
+```
+
 
 

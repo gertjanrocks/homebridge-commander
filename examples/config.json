@@ -1,0 +1,51 @@
+{
+    "bridge": {
+        "name": "Homebridge",
+        "username": "CC:22:3D:E3:CE:31",
+        "port": 51826,
+        "pin": "031-45-134"
+    },
+    
+    "accessories": [
+    ],
+
+    "platforms": [
+         {
+            "platform": "commander",
+            "name": "PlatformName",
+            "commands": [{
+                "name": "SwitchName",
+                "type": "switch",
+                "cmd" : "~/ExampleScript.sh"
+            },
+            {
+                "name": "LightbulbName_1",
+                "type": "lightbulb",
+                "cmd" : "~/ExampleScript.sh",
+                "brightness" : true,
+                "hue": true,
+                "saturation" : true
+            },
+            {
+                "name": "LightbulbName_2",
+                "type": "lightbulb",
+                "cmd" : "~/ExampleScript.sh",
+                "brightness" : true,
+                "colortemperature" : true
+            },
+            {
+                "name": "OutletName",
+                "type": "outlet",
+                "cmd" : "~/ExampleScript.sh"
+            },
+            {
+                "name": "SpeakerName",
+                "type": "speaker",
+                "volume": true,
+                "cmd" : "~/ExampleScript.sh"
+            }
+            ]
+         }
+        
+    ]
+}
