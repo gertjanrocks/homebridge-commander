@@ -73,7 +73,7 @@ function commanderCommand(log, commandConfig) {
   //Switch state to select the wanted service
   switch(this.type)
   {
-    case "Switch":
+    case "switch":
     {
       //Required setting
       this.service = new Service.Switch(this.name);
@@ -82,7 +82,7 @@ function commanderCommand(log, commandConfig) {
       .on('get', this.getPowerState.bind(this));
       break;
     }
-    case "Lightbulb":
+    case "lightbulb":
     {
       //Required setting
       this.service = new Service.Lightbulb(this.name);
@@ -115,7 +115,7 @@ function commanderCommand(log, commandConfig) {
       }
       break;
     }      
-    case "Outlet":
+    case "outlet":
     {
       //Required setting
       this.service = new Service.Outlet(this.name);
@@ -126,7 +126,7 @@ function commanderCommand(log, commandConfig) {
       .on('get', this.getOutletInUse.bind(this));
       break;
     }
-    case "Speaker":
+    case "speaker":
     {
       //Required setting
       this.service = new Service.Speaker(this.name);
@@ -163,12 +163,12 @@ commanderCommand.prototype.updateStatus = function() {
   //Select the wanted get service for each type
   switch(that.type)
   {
-    case "Switch":
+    case "switch":
     {
       this.service.getCharacteristic(Characteristic.On).getValue();
       break;
     }
-    case "Lightbulb":
+    case "lightbulb":
     {
       this.service.getCharacteristic(Characteristic.On).getValue();
       //Set optional statuses
@@ -186,13 +186,13 @@ commanderCommand.prototype.updateStatus = function() {
       }
       break;
     }
-    case "Outlet":
+    case "outlet":
     {
       this.service.getCharacteristic(Characteristic.On).getValue();
       this.service.getCharacteristic(Characteristic.OutletInUse).getValue();
       break;
     }
-    case "Speaker":
+    case "speaker":
     {
       this.service.getCharacteristic(Characteristic.Mute).getValue();
       this.service.getCharacteristic(Characteristic.Volume).getValue();
