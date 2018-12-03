@@ -3,9 +3,10 @@ CLI plug-in for [HomeBridge](https://github.com/nfarina/homebridge)
 
 By default homebridge-commander will execute the cmd listed in the config with default arguments. The default arguments are the name of the command (given name from config.json), the type of command (powerstate, brightness, etc.) the action (get or set), and the value (only with set command).
 
-See ExampleScript.sh in the example directory for one script which excepts all commands.
-It is possible to have a seperate script each listed command.
+See ExampleScript.sh in the example directory. This script can be used for all commands configurated.
+It is possible to have a seperate script for each command.
 
+Command call:
 ```
  cmd command_name command_type action value
  
@@ -15,7 +16,7 @@ It is possible to have a seperate script each listed command.
 
 The arguments can be turned off by setting the no_arg value to true
 
-## Supported types
+## Supported types (More will be added soon)
 - Switch
 - Lightbulb
 - Outlet
@@ -47,15 +48,16 @@ Platform config settings. See config.json in the example directory.
 | `"platform"` | Should be set to "commander" | yes |
 | `"name"` | Platform name changeable for user | yes |
 | `"commands` | List of commands | yes |
-| `"name"`  |  User Name of the command  |  yes  |
-| `"type"`  |  Which tyoe the command needs to appear in HomeKit  |  yes  |
+| `"name"`  |  User given name of the command  |  yes  |
+| `"type"`  |  Which type the command needs to appear in HomeKit  |  yes  |
 | `"cmd"`  |  Executed command (can be bash script)  |  yes  |
-| `"no_arg"`  |  Let the plugin execute the command without arguments. Is false when when not listed   |  no  |
+| `"no_arg"`  |  Let the plugin execute the command without arguments. Default false when not listed   |  no  |
 | `"updaterate"` | Update rate to get status in miliseconds (default 5000) | no |
 
 
 ### Switch
 Switch has no additional settings.
+
 Switch has the following command_types config:
 
 | command_types | get | set | description |   
@@ -73,10 +75,11 @@ Example of a switch command:
 
 ### Lightbulb
 Set the listed settings to true to have them active in Homekit
+
 Lightbulb supports hue and saturation or colortemperture.
 When hue or saturation is set to true colortemperature will be disabled.
 
-Use the Hue and Saturation for color settings and colortemperature for ambient settings.
+Use the Hue and Saturation for color settings and Color Temperature for ambient settings.
 
 ```
 "brightness" : true,
@@ -112,6 +115,7 @@ Example of a lightbulb command config (without Color Temperature):
 
 ### Outlet
 Outlet has no additional settings.
+
 Outlet has the following command_types :
 
 | command_types | get | set | description |   
