@@ -1,23 +1,11 @@
 "use strict";
-var http = require('http');
-var inherits = require('util').inherits;
-const os = require('os');
-var debug = false;
-
-/////////////////
-
-
 var exec = require("child_process").exec;
-// var Accessory
 var Service;
 var Characteristic;
-//var UUIDGen;
 
 module.exports = function (homebridge) {
-  //Accessory = homebridge.platformAccessory;
   Service = homebridge.hap.Service;
   Characteristic = homebridge.hap.Characteristic;
-  //UUIDGen = homebridge.hap.uuid;
 
   homebridge.registerPlatform("homebridge-commander", "commander", commanderPlatform);
 }
@@ -133,6 +121,7 @@ function commanderCommand(log, commandConfig) {
       this.service.getCharacteristic(Characteristic.Mute)
       .on('set', this.setMute.bind(this))
       .on('get', this.getMute.bind(this));
+      //Optional if "volume" is true
       if(this.settings.volume) {
         this.service.getCharacteristic(Characteristic.Volume)
         .on('set', this.setVolume.bind(this))
@@ -195,7 +184,9 @@ commanderCommand.prototype.updateStatus = function() {
     case "speaker":
     {
       this.service.getCharacteristic(Characteristic.Mute).getValue();
-      this.service.getCharacteristic(Characteristic.Volume).getValue();
+      if(this.settings.volume){
+        this.service.getCharacteristic(Characteristic.Volume).getValue();
+      }
       break;
     }
   }
