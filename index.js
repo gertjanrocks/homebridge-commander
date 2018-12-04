@@ -55,6 +55,7 @@ function commanderCommand(log, commandConfig) {
   }
   //Speaker
   this.settings.volume = commandConfig.volume || false;
+  //Window Covering
     
   this.log("Adding command",this.name, "as", this.type, "...");
 
@@ -127,6 +128,44 @@ function commanderCommand(log, commandConfig) {
         .on('set', this.setVolume.bind(this))
         .on('get', this.getVolume.bind(this));
       }
+      break;
+    }
+    case "windowcovering":
+    {
+      //Required setting
+      this.service = new Service.WindowCovering(this.name);
+      this.service.getCharacteristic(Characteristic.CurrentPosition)
+      .on('get', this.getCurrentPosition.bind(this));
+      //Required setting
+      this.service.getCharacteristic(Characteristic.TargetPosition)
+      .on('set', this.setTargetPosition.bind(this))
+      .on('get', this.getTargetPosition.bind(this));
+      //Required setting
+      this.service.getCharacteristic(Characteristic.PositionState)
+      .on('get', this.getPositionState.bind(this));
+      //Optional if "holdposition" is true
+      if(this.settings.holdposition) {
+        this.service.getCharacteristic(Characteristic.HoldPosition)
+        .on('set', this.setHoldPosition.bind(this));
+      }
+      //Optional if "targethorizontaltiltangle" is true
+      if(this.settings.targethorizontaltiltangle) {
+        this.service.getCharacteristic(Characteristic.TargetHorizontalTiltAngle)
+        .on('set', this.setTargetHorizontalTiltAngle.bind(this))
+        .on('get', this.getTargetHorizontalTiltAngle.bind(this));
+      }
+      // //Optional if "saturation" is true
+      // if(this.settings.saturation) {
+      //   this.service.getCharacteristic(Characteristic.Saturation)
+      //   .on('set', this.setSaturation.bind(this))
+      //   .on('get', this.getSaturation.bind(this));
+      // }
+      // //Optional if "colortemperature" is true
+      // if(this.settings.colortemperature) {
+      //   this.service.getCharacteristic(Characteristic.ColorTemperature)
+      //   .on('set', this.setColorTemperature.bind(this))
+      //   .on('get', this.getColorTemperature.bind(this));
+      // }
       break;
     }
   }
@@ -574,4 +613,108 @@ commanderCommand.prototype.setVolume = function(value, callback) {
     }
   });
   that.getVolume(callback);
+}
+
+//
+//  CurrentPosition Get is used for:
+//    Window Covering
+//
+commanderCommand.prototype.getCurrentPosition = function(callback) {
+  var that = this;
+  var cmd = that.cmd;
+
+  // Add arguments
+  if(!that.no_arg){
+    cmd += " " + that.name + " currentposition" + " get";
+  }
+  // Execute command to get the Current Position
+  exec(cmd, function (error, stdout, stderr) {
+    //Get Current Position
+    that.currentposition = parseInt(stdout);  
+    // Error detection
+    if (stderr) {
+      that.log("Failed to excecute get command for",that.name);
+      that.log(stderr);
+    }
+    if (callback) {
+      callback(stderr, that.currentposition);
+    }
+  });
+}
+
+//
+//  TargetPosition Get and Set is used for:
+//    Speaker
+//
+commanderCommand.prototype.getTargetPosition = function(callback) {
+  var that = this;
+  var cmd = that.cmd;
+
+  // Add arguments
+  if(!that.no_arg){
+    cmd += " " + that.name + " targetposition" + " get";
+  }
+  // Execute command to get the Target Position
+  exec(cmd, function (error, stdout, stderr) {
+    //Get Target Position
+    that.targetposition = parseInt(stdout);  
+    // Error detection
+    if (stderr) {
+      that.log("Failed to excecute get command for",that.name);
+      that.log(stderr);
+    }
+    if (callback) {
+      callback(stderr, that.targetposition);
+    }
+  });
+}
+
+commanderCommand.prototype.setTargetPosition = function(value, callback) {
+  var that = this;
+  var cmd = that.cmd;
+
+  // Add arguments
+  if(!that.no_arg){
+    cmd += " " + that.name + " targetposition " + "set " + value;
+  }  
+  // Execute command to set Target Position
+  exec(cmd, function (error, stdout, stderr) {
+    // Error detection
+    if (error) {
+      that.log("Failed to execute set command for",that.name);
+      that.log(stderr);
+    } else {
+      if (cmd) that.log(that.name,"Target Position changed to",value);
+      error = null;
+      that.targetposition = value;
+    }
+  });
+  that.getTargetPosition(callback);
+}
+
+//
+//  Position State Get is used for:
+//    Window Covering
+//
+commanderCommand.prototype.getPositionState = function(callback) {
+  var that = this;
+  var cmd = that.cmd;
+
+  // Add arguments
+  if(!that.no_arg){
+    cmd += " " + that.name + " positionstate" + " get";
+  }
+  // Execute command to get the Position State
+  exec(cmd, function (error, stdout, stderr) {
+    //Get Position state
+    that.positionstate = parseInt(stdout);  
+    // Error detection
+    if (stderr) {
+      that.log("Failed to excecute get command for",that.name);
+      that.log(stderr);
+    }
+    if (callback) {
+      callback(stderr, that.psoitionstate);
+    }
+  });
 }
