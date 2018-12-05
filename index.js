@@ -56,6 +56,7 @@ function commanderCommand(log, commandConfig) {
   //Speaker
   this.settings.volume = commandConfig.volume || false;
   //Window Covering
+  this.settings.holdposition = commandConfig.holdposition || false;
     
   this.log("Adding command",this.name, "as", this.type, "...");
 
@@ -266,3 +267,5 @@ commanderCommand.prototype.getTargetPosition = Characteristics.getTargetPosition
 commanderCommand.prototype.setTargetPosition = Characteristics.setTargetPosition;
 
 commanderCommand.prototype.getPositionState = Characteristics.getPositionState;
+
+commanderCommand.prototype.setHoldPosition = Characteristics.setHoldPosition;
