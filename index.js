@@ -57,6 +57,11 @@ function commanderCommand(log, commandConfig) {
   this.settings.volume = commandConfig.volume || false;
   //Window Covering
   this.settings.holdposition = commandConfig.holdposition || false;
+  this.settings.targethorizontaltiltangle = commandConfig.targethorizontaltiltangle || false;
+  this.settings.targetverticaltiltangle = commandConfig.targetverticaltiltangle || false;
+  this.settings.currenthorizontaltiltangle = commandConfig.currenthorizontaltiltangle || false;
+  this.settings.currentverticaltiltangle = commandConfig.currentverticaltiltangle || false;
+  this.settings.obstructiondetected = commandConfig.obstructiondetected || false;
     
   this.log("Adding command",this.name, "as", this.type, "...");
 
@@ -155,18 +160,27 @@ function commanderCommand(log, commandConfig) {
         .on('set', this.setTargetHorizontalTiltAngle.bind(this))
         .on('get', this.getTargetHorizontalTiltAngle.bind(this));
       }
-      // //Optional if "saturation" is true
-      // if(this.settings.saturation) {
-      //   this.service.getCharacteristic(Characteristic.Saturation)
-      //   .on('set', this.setSaturation.bind(this))
-      //   .on('get', this.getSaturation.bind(this));
-      // }
-      // //Optional if "colortemperature" is true
-      // if(this.settings.colortemperature) {
-      //   this.service.getCharacteristic(Characteristic.ColorTemperature)
-      //   .on('set', this.setColorTemperature.bind(this))
-      //   .on('get', this.getColorTemperature.bind(this));
-      // }
+      //Optional if "targetverticaltiltangle" is true
+      if(this.settings.targetverticaltiltangle) {
+        this.service.getCharacteristic(Characteristic.TargetVerticalTiltAngle)
+        .on('set', this.setTargetVerticalTiltAngle.bind(this))
+        .on('get', this.getTargetVerticalTiltAngle.bind(this));
+      }
+      //Optional if "currenthorizontaltiltangle" is true
+      if(this.settings.currenthorizontaltiltangle) {
+        this.service.getCharacteristic(Characteristic.CurrentHorizontalTiltAngle)
+        .on('get', this.getCurrentHorizontalTiltAngle.bind(this));
+      }
+      //Optional if "currentverticaltiltangle" is true
+      if(this.settings.currentverticaltiltangle) {
+        this.service.getCharacteristic(Characteristic.CurrentVerticalTiltAngle)
+        .on('get', this.getCurrentVerticalTiltAngle.bind(this));
+      }
+      //Optional if "obstructiondetected" is true
+      if(this.settings.obstructiondetected) {
+        this.service.getCharacteristic(Characteristic.ObstructionDetected)
+        .on('get', this.getObstructionDetected.bind(this));
+      }
       break;
     }
   }
@@ -229,6 +243,32 @@ commanderCommand.prototype.updateStatus = function() {
       }
       break;
     }
+    case "windowcovering":
+    {
+      this.service.getCharacteristic(Characteristic.CurrentPosition).getValue();
+      this.service.getCharacteristic(Characteristic.TargetPosition).getValue();
+      this.service.getCharacteristic(Characteristic.PositionState).getValue();
+      //Optional statussen
+      if(this.settings.holdposition) {
+        this.service.getCharacteristic(Characteristic.HoldPosition).getValue();
+      }
+      if(this.settings.targethorizontaltiltangle) {
+        this.service.getCharacteristic(Characteristic.TargetHorizontalTiltAngle).getValue();
+      }
+      if(this.settings.targetverticaltiltangle) {
+        this.service.getCharacteristic(Characteristic.TargetVerticalTiltAngle).getValue();
+      }
+      if(this.settings.currenthorizontaltiltangle) {
+        this.service.getCharacteristic(Characteristic.CurrentHorizontalTiltAngle).getValue();
+      }
+      if(this.settings.currentverticaltiltangle) {
+        this.service.getCharacteristic(Characteristic.CurrentVerticalTiltAngle).getValue();
+      }
+      if(this.settings.obstructiondetected) {
+        this.service.getCharacteristic(Characteristic.ObstructionDetected).getValue();
+      }
+      break;
+    }
   }
 
   //Restart the timed update function
@@ -237,35 +277,35 @@ commanderCommand.prototype.updateStatus = function() {
   }, this.updaterate);
 }
 
+//
+// Couple all Characteristics funtions.
+//
 var Characteristics = require('./lib/characteristics')
 commanderCommand.prototype.getPowerState = Characteristics.getPowerState;
 commanderCommand.prototype.setPowerState = Characteristics.setPowerState;
-
 commanderCommand.prototype.getBrightness = Characteristics.getBrightness;
 commanderCommand.prototype.setBrightness = Characteristics.setBrightness;
-
 commanderCommand.prototype.getSaturation = Characteristics.getSaturation;
 commanderCommand.prototype.setSaturation = Characteristics.setSaturation;
-
 commanderCommand.prototype.getHue = Characteristics.getHue;
 commanderCommand.prototype.setHue = Characteristics.setHue;
-
 commanderCommand.prototype.getColorTemperature = Characteristics.getColorTemperature;
 commanderCommand.prototype.setColorTemperature = Characteristics.setColorTemperature;
-
 commanderCommand.prototype.getOutletInUse = Characteristics.getOutletInUse;
-
 commanderCommand.prototype.getMute = Characteristics.getMute;
 commanderCommand.prototype.setMute = Characteristics.setMute;
-
 commanderCommand.prototype.getVolume = Characteristics.getVolume;
 commanderCommand.prototype.setVolume = Characteristics.setVolume;
-
 commanderCommand.prototype.getCurrentPosition = Characteristics.getCurrentPosition;
-
 commanderCommand.prototype.getTargetPosition = Characteristics.getTargetPosition;
 commanderCommand.prototype.setTargetPosition = Characteristics.setTargetPosition;
-
 commanderCommand.prototype.getPositionState = Characteristics.getPositionState;
-
 commanderCommand.prototype.setHoldPosition = Characteristics.setHoldPosition;
+commanderCommand.prototype.getTargetHorizontalTiltAngle = Characteristics.getTargetHorizontalTiltAngle;
+commanderCommand.prototype.setTargetHorizontalTiltAngle = Characteristics.setTargetHorizontalTiltAngle;
+commanderCommand.prototype.getTargetVerticalTiltAngle = Characteristics.getTargetVerticalTiltAngle;
+commanderCommand.prototype.setTargetVerticalTiltAngle = Characteristics.setTargetVerticalTiltAngle;
+commanderCommand.prototype.getCurrentHorizontalTiltAngle = Characteristics.getCurrentHorizontalTiltAngle;
+commanderCommand.prototype.getCurrentVerticalTiltAngle = Characteristics.getCurrentVerticalTiltAngle;
+commanderCommand.prototype.getObstructionDetected = Characteristics.getObstructionDetected;
+

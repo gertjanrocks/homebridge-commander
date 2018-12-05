@@ -43,6 +43,17 @@
                 "type": "speaker",
                 "volume": true,
                 "cmd" : "~/ExampleScript.sh"
+            },
+            {
+                "name": "WindowCoveringName",
+                "type": "windowcovering",
+                "cmd" : "~/ExampleScript.sh",
+                "holdposition" : true,
+                "targethorizontaltiltangle" : true,
+                "targetverticaltiltangle" : true,
+                "currenthorizontaltiltangle" : true,
+                "currentverticaltiltangle" : true,
+                "obstructiondetected" : true
             }
             ]
          }
