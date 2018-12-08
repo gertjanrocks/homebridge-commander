@@ -178,9 +178,7 @@ elif [ $1 = "WindowCoveringName" ]; then
             if [ $3 = "get" ]; then
             echo "WindowCoveringName Current Vertical Tilt Angle get" >> ~/debug.txt
             echo 85 # Change this value to change Current Horizontal Tilt Angle
-        elif [ $3 = "set" ]; then
-            echo "WindowCoveringName brightness set to" $4 >> ~/debug.txt
-        fi
+         fi
     elif [ $2 = "obstructiondetected" ]; then
             if [ $3 = "get" ]; then
             echo "WindowCoveringName Obstruction Detected get" >> ~/debug.txt
