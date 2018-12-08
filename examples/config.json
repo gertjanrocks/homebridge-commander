@@ -45,6 +45,14 @@
                 "cmd" : "~/ExampleScript.sh"
             },
             {
+                "name": "SpeakerCustomName",
+                "type": "speaker",
+                "custom": true,
+                "volume": true,
+                "powerstate": true,
+                "cmd" : "~/ExampleScript.sh"
+            },
+            {
                 "name": "WindowCoveringName",
                 "type": "windowcovering",
                 "cmd" : "~/ExampleScript.sh",

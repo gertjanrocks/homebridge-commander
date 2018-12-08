@@ -107,6 +107,31 @@ elif [ $1 = "SpeakerName" ]; then
         fi
     fi
 
+# Argument handeling for SpeakerCustomName
+elif [ $1 = "SpeakerCustomName" ]; then
+    if [ $2 = "mute" ]; then
+        if [ $3 = "get" ]; then
+            echo "SpeakerCustomName Mute get" >> ~/debug.txt
+            echo false # Change this value to change mute
+        elif [ $3 = "set" ]; then
+            echo "SpeakerCustomName Mute set to" $4 >> ~/debug.txt
+        fi
+    elif [ $2 = "volume" ]; then
+        if [ $3 = "get" ]; then
+            echo "SpeakerCustomName Volume get" >> ~/debug.txt
+            echo 70 # Change this value to change the volume
+        elif [ $3 = "set" ]; then
+            echo "SpeakerCustomName volume set to" $4 >> ~/debug.txt
+        fi
+    elif [ $2 = "powerstate" ]; then
+        if [ $3 = "get" ]; then
+            echo "SpeakerCustomName PowerState get" >> ~/debug.txt
+            echo false # Change this value to change PowerState
+        elif [ $3 = "set" ]; then
+            echo "SpeakerCustomName PowerState set to" $4 >> ~/debug.txt
+        fi
+    fi
+
 # Argument handeling for WindowCoveringName
 elif [ $1 = "WindowCoveringName" ]; then
     if [ $2 = "currentposition" ]; then

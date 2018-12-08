@@ -2,6 +2,7 @@
 var exec = require("child_process").exec;
 var Service;
 var Characteristic;
+var Services;
 
 module.exports = function (homebridge) {
   Service = homebridge.hap.Service;
@@ -13,6 +14,9 @@ module.exports = function (homebridge) {
 function commanderPlatform(log, config) {
   // Register the log
   this.log = log;
+
+  Services = require('./lib/services');
+  Services(this,Service, Characteristic);
 
   // Get all the commands
   this.config = config || {"platform": "commander"};
@@ -33,7 +37,6 @@ commanderPlatform.prototype.accessories = function(callback) {
 }
 
 function commanderCommand(log, commandConfig) {
-
   //Basic settings
   this.log = log;
   this.config = commandConfig;
@@ -42,8 +45,9 @@ function commanderCommand(log, commandConfig) {
   this.type = commandConfig.type;
   this.cmd = commandConfig.cmd;
   this.no_arg = commandConfig.no_arg || false;
+  this.custom = commandConfig.custom || false;
 
-  //Optinal settings for different types
+  //Read optional settings from config
   this.settings = [];
   //Lightbulb  
   this.settings.brightness = commandConfig.brightness || false;
@@ -62,128 +66,21 @@ function commanderCommand(log, commandConfig) {
   this.settings.currenthorizontaltiltangle = commandConfig.currenthorizontaltiltangle || false;
   this.settings.currentverticaltiltangle = commandConfig.currentverticaltiltangle || false;
   this.settings.obstructiondetected = commandConfig.obstructiondetected || false;
-    
+  //Custom (Are default for other but not for costum)
+  this.settings.powerstate = commandConfig.powerstate || false;
+  this.settings.outletinuse = commandConfig.outletinuse || false;
+  this.settings.mute = commandConfig.mute || false;
+  this.settings.currentposition = commandConfig.currentposition || false;
+  this.settings.targetposition = commandConfig.targetposition || false;
+  this.settings.positionstate = commandConfig.positionstate || false;
+  
+   
   this.log("Adding command",this.name, "as", this.type, "...");
 
-  //Switch state to select the wanted service
-  switch(this.type)
-  {
-    case "switch":
-    {
-      //Required setting
-      this.service = new Service.Switch(this.name);
-      this.service.getCharacteristic(Characteristic.On)
-      .on('set', this.setPowerState.bind(this))
-      .on('get', this.getPowerState.bind(this));
-      break;
-    }
-    case "lightbulb":
-    {
-      //Required setting
-      this.service = new Service.Lightbulb(this.name);
-      this.service.getCharacteristic(Characteristic.On)
-      .on('set', this.setPowerState.bind(this))
-      .on('get', this.getPowerState.bind(this));
-      //Optional if "brightness" is true
-      if(this.settings.brightness) {
-        this.service.getCharacteristic(Characteristic.Brightness)
-        .on('set', this.setBrightness.bind(this))
-        .on('get', this.getBrightness.bind(this));
-      }
-      //Optional if "hue" is true
-      if(this.settings.hue) {
-        this.service.getCharacteristic(Characteristic.Hue)
-        .on('set', this.setHue.bind(this))
-        .on('get', this.getHue.bind(this));
-      }
-      //Optional if "saturation" is true
-      if(this.settings.saturation) {
-        this.service.getCharacteristic(Characteristic.Saturation)
-        .on('set', this.setSaturation.bind(this))
-        .on('get', this.getSaturation.bind(this));
-      }
-      //Optional if "colortemperature" is true
-      if(this.settings.colortemperature) {
-        this.service.getCharacteristic(Characteristic.ColorTemperature)
-        .on('set', this.setColorTemperature.bind(this))
-        .on('get', this.getColorTemperature.bind(this));
-      }
-      break;
-    }      
-    case "outlet":
-    {
-      //Required setting
-      this.service = new Service.Outlet(this.name);
-      this.service.getCharacteristic(Characteristic.On)
-      .on('set', this.setPowerState.bind(this))
-      .on('get', this.getPowerState.bind(this));
-      this.service.getCharacteristic(Characteristic.OutletInUse)
-      .on('get', this.getOutletInUse.bind(this));
-      break;
-    }
-    case "speaker":
-    {
-      //Required setting
-      this.service = new Service.Speaker(this.name);
-      this.service.getCharacteristic(Characteristic.Mute)
-      .on('set', this.setMute.bind(this))
-      .on('get', this.getMute.bind(this));
-      //Optional if "volume" is true
-      if(this.settings.volume) {
-        this.service.getCharacteristic(Characteristic.Volume)
-        .on('set', this.setVolume.bind(this))
-        .on('get', this.getVolume.bind(this));
-      }
-      break;
-    }
-    case "windowcovering":
-    {
-      //Required setting
-      this.service = new Service.WindowCovering(this.name);
-      this.service.getCharacteristic(Characteristic.CurrentPosition)
-      .on('get', this.getCurrentPosition.bind(this));
-      //Required setting
-      this.service.getCharacteristic(Characteristic.TargetPosition)
-      .on('set', this.setTargetPosition.bind(this))
-      .on('get', this.getTargetPosition.bind(this));
-      //Required setting
-      this.service.getCharacteristic(Characteristic.PositionState)
-      .on('get', this.getPositionState.bind(this));
-      //Optional if "holdposition" is true
-      if(this.settings.holdposition) {
-        this.service.getCharacteristic(Characteristic.HoldPosition)
-        .on('set', this.setHoldPosition.bind(this));
-      }
-      //Optional if "targethorizontaltiltangle" is true
-      if(this.settings.targethorizontaltiltangle) {
-        this.service.getCharacteristic(Characteristic.TargetHorizontalTiltAngle)
-        .on('set', this.setTargetHorizontalTiltAngle.bind(this))
-        .on('get', this.getTargetHorizontalTiltAngle.bind(this));
-      }
-      //Optional if "targetverticaltiltangle" is true
-      if(this.settings.targetverticaltiltangle) {
-        this.service.getCharacteristic(Characteristic.TargetVerticalTiltAngle)
-        .on('set', this.setTargetVerticalTiltAngle.bind(this))
-        .on('get', this.getTargetVerticalTiltAngle.bind(this));
-      }
-      //Optional if "currenthorizontaltiltangle" is true
-      if(this.settings.currenthorizontaltiltangle) {
-        this.service.getCharacteristic(Characteristic.CurrentHorizontalTiltAngle)
-        .on('get', this.getCurrentHorizontalTiltAngle.bind(this));
-      }
-      //Optional if "currentverticaltiltangle" is true
-      if(this.settings.currentverticaltiltangle) {
-        this.service.getCharacteristic(Characteristic.CurrentVerticalTiltAngle)
-        .on('get', this.getCurrentVerticalTiltAngle.bind(this));
-      }
-      //Optional if "obstructiondetected" is true
-      if(this.settings.obstructiondetected) {
-        this.service.getCharacteristic(Characteristic.ObstructionDetected)
-        .on('get', this.getObstructionDetected.bind(this));
-      }
-      break;
-    }
-  }
+  //Add the service defined on type
+  Services.addService(this);
+  //Add the required and optional characteritics to the service
+  Services.addCharacteristic(this);
 
   //Start the update service
   setTimeout(this.updateStatus.bind(this), this.updaterate);
@@ -199,78 +96,13 @@ commanderCommand.prototype.getServices = function() {
   return [informationService, this.service];
 }
 
-
+//Update the status
 commanderCommand.prototype.updateStatus = function() {
   var that = this;
-
-  //Select the wanted get service for each type
-  switch(that.type)
-  {
-    case "switch":
-    {
-      this.service.getCharacteristic(Characteristic.On).getValue();
-      break;
-    }
-    case "lightbulb":
-    {
-      this.service.getCharacteristic(Characteristic.On).getValue();
-      //Set optional statuses
-      if(this.settings.brightness) {
-        this.service.getCharacteristic(Characteristic.Brightness).getValue();
-      }
-      if(this.settings.hue) {
-        this.service.getCharacteristic(Characteristic.Hue).getValue();
-      }
-      if(this.settings.saturation) {
-        this.service.getCharacteristic(Characteristic.Saturation).getValue();
-      }
-      if(this.settings.colortemperature) {
-        this.service.getCharacteristic(Characteristic.ColorTemperature).getValue();
-      }
-      break;
-    }
-    case "outlet":
-    {
-      this.service.getCharacteristic(Characteristic.On).getValue();
-      this.service.getCharacteristic(Characteristic.OutletInUse).getValue();
-      break;
-    }
-    case "speaker":
-    {
-      this.service.getCharacteristic(Characteristic.Mute).getValue();
-      if(this.settings.volume){
-        this.service.getCharacteristic(Characteristic.Volume).getValue();
-      }
-      break;
-    }
-    case "windowcovering":
-    {
-      this.service.getCharacteristic(Characteristic.CurrentPosition).getValue();
-      this.service.getCharacteristic(Characteristic.TargetPosition).getValue();
-      this.service.getCharacteristic(Characteristic.PositionState).getValue();
-      //Optional statussen
-      if(this.settings.holdposition) {
-        this.service.getCharacteristic(Characteristic.HoldPosition).getValue();
-      }
-      if(this.settings.targethorizontaltiltangle) {
-        this.service.getCharacteristic(Characteristic.TargetHorizontalTiltAngle).getValue();
-      }
-      if(this.settings.targetverticaltiltangle) {
-        this.service.getCharacteristic(Characteristic.TargetVerticalTiltAngle).getValue();
-      }
-      if(this.settings.currenthorizontaltiltangle) {
-        this.service.getCharacteristic(Characteristic.CurrentHorizontalTiltAngle).getValue();
-      }
-      if(this.settings.currentverticaltiltangle) {
-        this.service.getCharacteristic(Characteristic.CurrentVerticalTiltAngle).getValue();
-      }
-      if(this.settings.obstructiondetected) {
-        this.service.getCharacteristic(Characteristic.ObstructionDetected).getValue();
-      }
-      break;
-    }
-  }
-
+that.log("updateState for", that.name);
+  //Call update funcion
+  Services.updateStatus(that);
+  
   //Restart the timed update function
   setTimeout(function() {
     that.updateStatus();
