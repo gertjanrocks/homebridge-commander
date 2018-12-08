@@ -197,14 +197,12 @@ Example of a window cover command config:
 
 ### Custom Service
 Adding the option "custom" to a command extra settings can be added.
-
 Only settings which are not already standard for the selected type can be added.
-
 The used arguments etc. are based on the arguments where this extra setting is supported.
 
 **With the custom option, services could be created which are not supported by HomeKit!**
 
-See the config.json and Examplescript for a starting point to add custom options
+See the config.json and Examplescript for a starting point to add custom options.
 
 Example where a standard speaker has a powerstate setting:
 
