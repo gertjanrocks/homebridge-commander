@@ -1,7 +1,7 @@
 # homebridge-commander [![npm version](https://badge.fury.io/js/homebridge-commander.svg)](https://badge.fury.io/js/homebridge-commander)
 CLI plug-in for [HomeBridge](https://github.com/nfarina/homebridge)
 
-By default homebridge-commander will execute the cmd listed in the config with default arguments. The default arguments are the name of the command (given name from config.json), the type of command (powerstate, brightness, etc.) the action (get or set), and the value (only with set command).
+By default homebridge-commander will execute the command listed in config.json with default arguments. The default arguments are the name of the command (given name from config.json), the type of command (powerstate, brightness, etc.) the action (get or set), and the value (only with set command).
 
 See ExampleScript.sh in the example directory. This script can be used for all commands configurated.
 It is possible to have a seperate script for each command.
@@ -21,6 +21,7 @@ The arguments can be turned off by setting the no_arg value to true
 - Lightbulb
 - Outlet
 - Speaker
+- Window Cover
 
 ## Config.json settings
 Platform config settings. See config.json in the example directory.
@@ -154,5 +155,64 @@ Example of a speaker command config:
     }
 ```
 
+### Window Cover
+Set the listed settings to true to have them active in Homekit
 
+```
+"holdposition" : true,
+"targethorizontaltiltangle" : true,
+"targetverticaltiltangle" : true,
+"currenthorizontaltiltangle" : true,
+"currentverticaltiltangle" : true,
+"obstructiondetected" : true
+```
+Window Cover has the following command_types :
 
+| command_types | get | set | description |  
+| ------------- | --- | --- | ----------- |
+| `currentposition`  |  X  |  -  | position in 0-100% |
+| `targetposition`  |  X  |  X  | position in 0-100% |
+| `positionstate`  |  X  |  -  | 0 = to min, 1 = to max, 2 = stopped |
+| `holdposition`  |  -  |  X  | true to hold |
+| `targethorizontaltiltangle`  |  X  |  X  | angle in -90-90 arcdegrees |
+| `targetverticaltiltangle`  |  X  |  X  | angle in -90-90 arcdegrees |
+| `currenthorizontaltiltangle`  |  X  |  -  | angle in -90-90 arcdegrees |
+| `currentverticaltiltangle`  |  X  |  -  | angle in -90-90 arcdegrees |
+| `obstructiondetected`  |  X  |  -  | true on detection |
+
+Example of a window cover command config:
+```
+"commands": [{
+    "name": "WindowCoveringName",
+    "type": "windowcovering",
+    "cmd" : "~/ExampleScript.sh",
+    "holdposition" : true,
+    "targethorizontaltiltangle" : true,
+    "targetverticaltiltangle" : true,
+    "currenthorizontaltiltangle" : true,
+    "currentverticaltiltangle" : true,
+    "obstructiondetected" : true
+    }
+```
+
+### Custom Service
+Adding the option "custom" to a command extra settings can be added.
+Only settings which are not already standard for the selected type can be added.
+The used arguments etc. are based on the arguments where this extra setting is supported.
+
+**With the custom option, services could be created which are not supported by HomeKit!**
+
+See the config.json and Examplescript for a starting point to add custom options.
+
+Example where a standard speaker has a powerstate setting:
+
+```
+"commands": [{
+    "name": "SpeakerCustomName",
+    "type": "speaker",
+    "custom": true,
+    "volume": true,
+    "powerstate": true,
+    "cmd" : "~/ExampleScript.sh"
+    }
+```

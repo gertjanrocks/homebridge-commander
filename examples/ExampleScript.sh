@@ -106,6 +106,85 @@ elif [ $1 = "SpeakerName" ]; then
             echo "SpeakerName volume set to" $4 >> ~/debug.txt
         fi
     fi
+
+# Argument handeling for SpeakerCustomName
+elif [ $1 = "SpeakerCustomName" ]; then
+    if [ $2 = "mute" ]; then
+        if [ $3 = "get" ]; then
+            echo "SpeakerCustomName Mute get" >> ~/debug.txt
+            echo false # Change this value to change mute
+        elif [ $3 = "set" ]; then
+            echo "SpeakerCustomName Mute set to" $4 >> ~/debug.txt
+        fi
+    elif [ $2 = "volume" ]; then
+        if [ $3 = "get" ]; then
+            echo "SpeakerCustomName Volume get" >> ~/debug.txt
+            echo 70 # Change this value to change the volume
+        elif [ $3 = "set" ]; then
+            echo "SpeakerCustomName volume set to" $4 >> ~/debug.txt
+        fi
+    elif [ $2 = "powerstate" ]; then
+        if [ $3 = "get" ]; then
+            echo "SpeakerCustomName PowerState get" >> ~/debug.txt
+            echo false # Change this value to change PowerState
+        elif [ $3 = "set" ]; then
+            echo "SpeakerCustomName PowerState set to" $4 >> ~/debug.txt
+        fi
+    fi
+
+# Argument handeling for WindowCoveringName
+elif [ $1 = "WindowCoveringName" ]; then
+    if [ $2 = "currentposition" ]; then
+        if [ $3 = "get" ]; then
+            echo "WindowCoveringName Current Position get" >> ~/debug.txt
+            echo 60 # Change this value to change Current Position
+        fi
+    elif [ $2 = "targetposition" ]; then
+        if [ $3 = "get" ]; then
+            echo "WindowCoveringName Target Position get" >> ~/debug.txt
+            echo 40 # Change this value to change Target Position
+        elif [ $3 = "set" ]; then
+            echo "WindowCoveringName target position set to" $4 >> ~/debug.txt
+        fi
+    elif [ $2 = "positionstate" ]; then
+        if [ $3 = "get" ]; then
+            echo "WindowCoveringName Position State get" >> ~/debug.txt
+            echo 2 # Change this value to change Position State
+        fi
+    elif [ $2 = "holdposition" ]; then
+        if [ $3 = "set" ]; then
+            echo "WindowCoveringName Hold Position set to" $4 >> ~/debug.txt
+        fi
+    elif [ $2 = "targethorizontaltiltangle" ]; then
+        if [ $3 = "get" ]; then
+            echo "WindowCoveringName Target Horizontal Tilt Angle get" >> ~/debug.txt
+            echo -4 # Change this value to change Target Horizontal Tilt Angle
+        elif [ $3 = "set" ]; then
+            echo "WindowCoveringName Target Horizontal Tilt Angle set to" $4 >> ~/debug.txt
+        fi
+    elif [ $2 = "targetverticaltiltangle" ]; then
+            if [ $3 = "get" ]; then
+            echo "WindowCoveringName Target Vertical Tilt Angle get" >> ~/debug.txt
+            echo 80 # Change this value to change Target Vertical Tilt Angle
+        elif [ $3 = "set" ]; then
+            echo "WindowCoveringName Target Vertical Tilt Angle set to" $4 >> ~/debug.txt
+        fi
+    elif [ $2 = "currenthorizontaltiltangle" ]; then
+            if [ $3 = "get" ]; then
+            echo "WindowCoveringName Current Horizontal Tilt Angle get" >> ~/debug.txt
+            echo -8 # Change this value to change Current Horizontal Tilt Angle
+        fi
+    elif [ $2 = "currentverticaltiltangle" ]; then
+            if [ $3 = "get" ]; then
+            echo "WindowCoveringName Current Vertical Tilt Angle get" >> ~/debug.txt
+            echo 85 # Change this value to change Current Horizontal Tilt Angle
+         fi
+    elif [ $2 = "obstructiondetected" ]; then
+            if [ $3 = "get" ]; then
+            echo "WindowCoveringName Obstruction Detected get" >> ~/debug.txt
+            echo false # Change this value to change Obstruction Detected 
+        fi
+    fi
 fi
 
 exit 0
