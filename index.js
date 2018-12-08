@@ -74,9 +74,6 @@ function commanderCommand(log, commandConfig) {
   this.settings.targetposition = commandConfig.targetposition || false;
   this.settings.positionstate = commandConfig.positionstate || false;
   
-   
-  this.log("Adding command",this.name, "as", this.type, "...");
-
   //Add the service defined on type
   Services.addService(this);
   //Add the required and optional characteritics to the service
@@ -99,7 +96,7 @@ commanderCommand.prototype.getServices = function() {
 //Update the status
 commanderCommand.prototype.updateStatus = function() {
   var that = this;
-that.log("updateState for", that.name);
+
   //Call update funcion
   Services.updateStatus(that);
   
