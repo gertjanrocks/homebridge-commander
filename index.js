@@ -73,6 +73,7 @@ function commanderCommand(log, commandConfig) {
   this.settings.currentposition = commandConfig.currentposition || false;
   this.settings.targetposition = commandConfig.targetposition || false;
   this.settings.positionstate = commandConfig.positionstate || false;
+  this.settings.currenttemperature = commandConfig.currenttemperature || false;
   
   //Add the service defined on type
   Services.addService(this);
@@ -137,4 +138,5 @@ commanderCommand.prototype.setTargetVerticalTiltAngle = Characteristics.setTarge
 commanderCommand.prototype.getCurrentHorizontalTiltAngle = Characteristics.getCurrentHorizontalTiltAngle;
 commanderCommand.prototype.getCurrentVerticalTiltAngle = Characteristics.getCurrentVerticalTiltAngle;
 commanderCommand.prototype.getObstructionDetected = Characteristics.getObstructionDetected;
+commanderCommand.prototype.getCurrentTemperature = Characteristics.getCurrentTemperature;
 
