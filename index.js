@@ -79,6 +79,7 @@ function commanderCommand(log, commandConfig) {
   this.settings.targetposition = commandConfig.targetposition || false;
   this.settings.positionstate = commandConfig.positionstate || false;
   this.settings.currenttemperature = commandConfig.currenttemperature || false;
+  this.settings.currentrelativehumidity = commandConfig.currentrelativehumidity || false;
   
   //Add the service defined on type
   Services.addService(this);
@@ -148,3 +149,4 @@ commanderCommand.prototype.getStatusActive = Characteristics.getStatusActive;
 commanderCommand.prototype.getStatusFault = Characteristics.getStatusFault;
 commanderCommand.prototype.getStatusLowBattery = Characteristics.getStatusLowBattery;
 commanderCommand.prototype.getStatusTampered = Characteristics.getStatusTampered;
+commanderCommand.prototype.getCurrentRelativeHumidity = Characteristics.getCurrentRelativeHumidity;
