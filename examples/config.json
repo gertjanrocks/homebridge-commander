@@ -62,6 +62,15 @@
                 "currenthorizontaltiltangle" : true,
                 "currentverticaltiltangle" : true,
                 "obstructiondetected" : true
+            },
+            {
+                "name": "TemperatureSensor_1",
+                "type": "temperaturesensor",
+                "cmd" : "~/ExampleScript.sh",
+                "statusactive" : true, 
+                "statusfault" : true,
+                "statuslowbattery" : true,
+                "statustampered" : true
             }
             ]
          }

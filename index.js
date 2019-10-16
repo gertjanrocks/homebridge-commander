@@ -49,6 +49,11 @@ function commanderCommand(log, commandConfig) {
 
   //Read optional settings from config
   this.settings = [];
+  //Statussen
+  this.settings.statusactive = commandConfig.statusactive || false;
+  this.settings.statusfault = commandConfig.statusfault || false;
+  this.settings.statuslowbattery = commandConfig.statuslowbattery || false;
+  this.settings.statustampered = commandConfig.statustampered || false;
   //Lightbulb  
   this.settings.brightness = commandConfig.brightness || false;
   this.settings.hue = commandConfig.hue || false;
@@ -139,4 +144,7 @@ commanderCommand.prototype.getCurrentHorizontalTiltAngle = Characteristics.getCu
 commanderCommand.prototype.getCurrentVerticalTiltAngle = Characteristics.getCurrentVerticalTiltAngle;
 commanderCommand.prototype.getObstructionDetected = Characteristics.getObstructionDetected;
 commanderCommand.prototype.getCurrentTemperature = Characteristics.getCurrentTemperature;
-
+commanderCommand.prototype.getStatusActive = Characteristics.getStatusActive;
+commanderCommand.prototype.getStatusFault = Characteristics.getStatusFault;
+commanderCommand.prototype.getStatusLowBattery = Characteristics.getStatusLowBattery;
+commanderCommand.prototype.getStatusTampered = Characteristics.getStatusTampered;

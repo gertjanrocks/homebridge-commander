@@ -185,6 +185,35 @@ elif [ $1 = "WindowCoveringName" ]; then
             echo false # Change this value to change Obstruction Detected 
         fi
     fi
+
+# Argument handeling for Temperature Sensor
+elif [ $1 = "TemperatureSensor_1" ]; then
+    if [ $2 = "currenttemperature" ]; then
+            if [ $3 = "get" ]; then
+            echo "TemperatureSensor_1 temperature get" >> ~/debug.txt
+            echo 10.9 # Change this value to change Temperature
+            fi
+    elif [ $2 = "statusactive" ]; then
+            if [ $3 = "get" ]; then
+            echo "TemperatureSensor_1 active get" >> ~/debug.txt
+            echo true # Change this value to change active status
+            fi
+    elif [ $2 = "statusfault" ]; then
+            if [ $3 = "get" ]; then
+            echo "TemperatureSensor_1 fault get" >> ~/debug.txt
+            echo 0 # Change this value to change fault status
+        fi
+    elif [ $2 = "statuslowbattery" ]; then
+            if [ $3 = "get" ]; then
+            echo "TemperatureSensor_1 active get" >> ~/debug.txt
+            echo 1 # Change this value to change lowbattery status
+        fi
+    elif [ $2 = "statustampered" ]; then
+            if [ $3 = "get" ]; then
+            echo "TemperatureSensor_1 active get" >> ~/debug.txt
+            echo 0 # Change this value to change tampered status
+        fi
+    fi
 fi
 
 exit 0
