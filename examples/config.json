@@ -71,6 +71,15 @@
                 "statusfault" : true,
                 "statuslowbattery" : true,
                 "statustampered" : true
+            },
+            {
+                "name": "HumiditySensor_1",
+                "type": "humiditysensor",
+                "cmd" : "~/ExampleScript.sh",
+                "statusactive" : true, 
+                "statusfault" : true,
+                "statuslowbattery" : true,
+                "statustampered" : true
             }
             ]
          }

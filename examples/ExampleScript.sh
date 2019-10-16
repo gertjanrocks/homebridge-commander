@@ -214,6 +214,35 @@ elif [ $1 = "TemperatureSensor_1" ]; then
             echo 0 # Change this value to change tampered status
         fi
     fi
+    
+# Argument handeling for Humidity Sensor
+elif [ $1 = "HumiditySensor_1" ]; then
+    if [ $2 = "currentrelativehumidity" ]; then
+            if [ $3 = "get" ]; then
+            echo "HumiditySensor_1 humidity get" >> ~/debug.txt
+            echo 99 # Change this value to change Humidity
+            fi
+    elif [ $2 = "statusactive" ]; then
+            if [ $3 = "get" ]; then
+            echo "HumiditySensor_1 active get" >> ~/debug.txt
+            echo true # Change this value to change active status
+            fi
+    elif [ $2 = "statusfault" ]; then
+            if [ $3 = "get" ]; then
+            echo "HumiditySensor_1 fault get" >> ~/debug.txt
+            echo 0 # Change this value to change fault status
+        fi
+    elif [ $2 = "statuslowbattery" ]; then
+            if [ $3 = "get" ]; then
+            echo "HumiditySensor_1 active get" >> ~/debug.txt
+            echo 0 # Change this value to change lowbattery status
+        fi
+    elif [ $2 = "statustampered" ]; then
+            if [ $3 = "get" ]; then
+            echo "HumiditySensor_1 active get" >> ~/debug.txt
+            echo 0 # Change this value to change tampered status
+        fi
+    fi
 fi
 
 exit 0
