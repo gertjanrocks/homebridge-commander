@@ -22,6 +22,8 @@ The arguments can be turned off by setting the no_arg value to true
 - Outlet
 - Speaker
 - Window Cover
+- Temperature Sensor
+- Humidity Sensor
 
 ## Config.json settings
 Platform config settings. See config.json in the example directory.
@@ -192,6 +194,70 @@ Example of a window cover command config:
     "currenthorizontaltiltangle" : true,
     "currentverticaltiltangle" : true,
     "obstructiondetected" : true
+    }
+```
+
+### Temperature Sensor
+Set the listed settings to true to have them active in Homekit
+
+```
+"statusactive" : true,
+"statusfault" : true,
+"statuslowbattery" : true,
+"statustampered" : true
+```
+Temperature sensor has the following command_types :
+
+| command_types | get | set | description |  
+| ------------- | --- | --- | ----------- |
+| `currenttemperature`  |  X  |  -  | temperature in 0-100 in degrees Celsius |
+| `statusactive`  |  X  |  -  | true for active |
+| `statusfault`  |  X  |  -  | 0 = no fault, 1 = general fault |
+| `statuslowbattery`  |  X  |  -  | 0 = normal, 1 = low battery |
+| `statustampered`  |  X  |  -  | 0 = not tampered, 1 = tampered  |
+
+Example of a temperature sensor command config:
+```
+"commands": [{
+    "name": "TemperatureSensor",
+    "type": "temperaturesensor",
+    "cmd" : "~/ExampleScript.sh",
+    "statusactive" : true,
+    "statusfault" : true,
+    "statuslowbattery" : true,
+    "statustampered" : true,
+    }
+```
+
+### Humidity Sensor
+Set the listed settings to true to have them active in Homekit
+
+```
+"statusactive" : true,
+"statusfault" : true,
+"statuslowbattery" : true,
+"statustampered" : true
+```
+Humidity sensor has the following command_types :
+
+| command_types | get | set | description |  
+| ------------- | --- | --- | ----------- |
+| `currentrelativehumidity`  |  X  |  -  | current relative humidity in 0-100% |
+| `statusactive`  |  X  |  -  | true for active |
+| `statusfault`  |  X  |  -  | 0 = no fault, 1 = general fault |
+| `statuslowbattery`  |  X  |  -  | 0 = normal, 1 = low battery |
+| `statustampered`  |  X  |  -  | 0 = not tampered, 1 = tampered  |
+
+Example of a humidity sensor command config:
+```
+"commands": [{
+    "name": "HumiditySensor",
+    "type": "humiditysensor",
+    "cmd" : "~/ExampleScript.sh",
+    "statusactive" : true,
+    "statusfault" : true,
+    "statuslowbattery" : true,
+    "statustampered" : true,
     }
 ```
 
