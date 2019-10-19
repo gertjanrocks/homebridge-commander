@@ -6,11 +6,6 @@ By default homebridge-commander will execute the command listed in config.json w
 See ExampleScript.sh in the example directory. This script can be used for all commands configurated.
 It is possible to have a seperate script for each command.
 
-## Installation of Homebridge-commander
-```
-sudo npm install -g homebridge-commander
-```
-
 Command call:
 ```
  cmd command_name command_type action value
@@ -20,6 +15,11 @@ Command call:
 ```
 
 The arguments can be turned off by setting the no_arg value to true
+
+## Installation of Homebridge-commander
+```
+sudo npm install -g homebridge-commander
+```
 
 ## Supported types (More will be added soon)
 - Switch
