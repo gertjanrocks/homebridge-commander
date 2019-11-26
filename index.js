@@ -42,7 +42,7 @@ function commanderCommand(log, commandConfig) {
   this.config = commandConfig;
   this.name = commandConfig.name;
   this.updaterate = commandConfig.updaterate || 5000;
-  this.type = commandConfig.type;
+  this.type = commandConfig.type.toLoweCase();
   this.cmd = commandConfig.cmd;
   this.no_arg = commandConfig.no_arg || false;
   this.custom = commandConfig.custom || false;
@@ -71,7 +71,7 @@ function commanderCommand(log, commandConfig) {
   this.settings.currenthorizontaltiltangle = commandConfig.currenthorizontaltiltangle || false;
   this.settings.currentverticaltiltangle = commandConfig.currentverticaltiltangle || false;
   this.settings.obstructiondetected = commandConfig.obstructiondetected || false;
-  //Custom (Are default for other but not for costum)
+  //Custom (Are default for other but not for custom)
   this.settings.powerstate = commandConfig.powerstate || false;
   this.settings.outletinuse = commandConfig.outletinuse || false;
   this.settings.mute = commandConfig.mute || false;
